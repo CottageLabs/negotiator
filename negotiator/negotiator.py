@@ -382,15 +382,15 @@ class ContentNegotiator(object):
         self.weights = weights if weights is not None else {'content_type' : 1.0, 'language' : 1.0, 'charset' : 1.0, 'encoding' : 1.0, 'packaging' : 1.0}
         self.ignore_language_variants = ignore_language_variants
         
-        if not self.weights.has_key("content_type"):
+        if 'content_type' not in self.weights:
             self.weights["content_type"] = 1.0
-        if not self.weights.has_key("language"):
+        if 'language' not in self.weights:
             self.weights["language"] = 1.0
-        if not self.weights.has_key("charset"):
+        if 'charset' not in self.weights:
             self.weights["charset"] = 1.0
-        if not self.weights.has_key("encoding"):
+        if 'encoding' not in self.weights:
             self.weights["encoding"] = 1.0
-        if not self.weights.has_key("packaging"):
+        if 'packaging' not in self.weights:
             self.weights["packaging"] = 1.0
 
     def negotiate(self, accept=None, accept_language=None, accept_encoding=None, accept_charset=None, accept_packaging=None):
@@ -744,215 +744,215 @@ if __name__ == "__main__":
     """
     Some basic tests to show the code in action
     """
-    print "========= CONTENT TYPE =============="
+    print("========= CONTENT TYPE ==============")
     
-    print "+++ text/plain only +++"
+    print("+++ text/plain only +++")
     accept = "text/plain"
     server = [AcceptParameters(ContentType("text/plain"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ application/atom+xml vs application/rdf+xml without q values +++"
+    print("+++ application/atom+xml vs application/rdf+xml without q values +++")
     accept = "application/atom+xml, application/rdf+xml"
     server = [AcceptParameters(ContentType("application/rdf+xml")), AcceptParameters(ContentType("application/atom+xml"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ application/atom+xml vs application/rdf+xml with q values +++"
+    print("+++ application/atom+xml vs application/rdf+xml with q values +++")
     accept = "application/atom+xml;q=0.6, application/rdf+xml;q=0.9"
     server = [AcceptParameters(ContentType("application/rdf+xml")), AcceptParameters(ContentType("application/atom+xml"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ application/atom+xml vs application/rdf+xml vs text/html with mixed q values +++"
+    print("+++ application/atom+xml vs application/rdf+xml vs text/html with mixed q values +++")
     accept = "application/atom+xml;q=0.6, application/rdf+xml;q=0.9, text/html"
     server = [AcceptParameters(ContentType("application/rdf+xml")), AcceptParameters(ContentType("application/atom+xml")),
                 AcceptParameters(ContentType("text/html"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ text/plain only, unsupported by server +++"
+    print("+++ text/plain only, unsupported by server +++")
     accept = "text/plain"
     server = [AcceptParameters(ContentType("text/html"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ application/atom+xml vs application/rdf+xml vs text/html with mixed q values, most preferred unavailable +++"
+    print("+++ application/atom+xml vs application/rdf+xml vs text/html with mixed q values, most preferred unavailable +++")
     accept = "application/atom+xml;q=0.6, application/rdf+xml;q=0.9, text/html"
     server = [AcceptParameters(ContentType("application/rdf+xml")), AcceptParameters(ContentType("application/atom+xml"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ application/atom+xml vs application/rdf+xml vs text/html with mixed q values, most preferred available +++"
+    print("+++ application/atom+xml vs application/rdf+xml vs text/html with mixed q values, most preferred available +++")
     accept = "application/atom+xml;q=0.6, application/rdf+xml;q=0.9, text/html"
     server = [AcceptParameters(ContentType("application/rdf+xml")), AcceptParameters(ContentType("text/html"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ application/atom+xml;type=feed supported by server +++"
+    print("+++ application/atom+xml;type=feed supported by server +++")
     accept = "application/atom+xml;type=feed"
     server = [AcceptParameters(ContentType("application/atom+xml;type=feed"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ image/* supported by server +++"
+    print("+++ image/* supported by server +++")
     accept = "image/*"
     server = [AcceptParameters(ContentType("text/plain")), AcceptParameters(ContentType("image/png")),
                 AcceptParameters(ContentType("image/jpeg"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ */* supported by server +++"
+    print("+++ */* supported by server +++")
     accept = "*/*"
     server = [AcceptParameters(ContentType("text/plain")), AcceptParameters(ContentType("image/png")),
                 AcceptParameters(ContentType("image/jpeg"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "===================================="
-    print "==============LANGUAGE=============="
+    print("====================================")
+    print("==============LANGUAGE==============")
     
-    print "+++ en only +++"
+    print("+++ en only +++")
     accept_language = "en"
     server = [AcceptParameters(language=Language("en"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept_language)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en vs de without q values +++"
+    print("+++ en vs de without q values +++")
     accept = "en, de"
     server = [AcceptParameters(language=Language("en")), AcceptParameters(language=Language("de"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ fr vs no with q values +++"
+    print("+++ fr vs no with q values +++")
     accept = "fr;q=0.7, no;q=0.8"
     server = [AcceptParameters(language=Language("fr")), AcceptParameters(language=Language("no"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en vs de vs fr with mixed q values +++"
+    print("+++ en vs de vs fr with mixed q values +++")
     accept = "en;q=0.6, de;q=0.9, fr"
     server = [AcceptParameters(language=Language("en")), AcceptParameters(language=Language("de")),
                 AcceptParameters(language=Language("fr"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en only, unsupported by server +++"
+    print("+++ en only, unsupported by server +++")
     accept = "en"
     server = [AcceptParameters(language=Language("de"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en vs no vs de with mixed q values, most preferred unavailable +++"
+    print("+++ en vs no vs de with mixed q values, most preferred unavailable +++")
     accept = "en;q=0.6, no;q=0.9, de"
     server = [AcceptParameters(language=Language("en")), AcceptParameters(language=Language("no"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en vs no vs de with mixed q values, most preferred available +++"
+    print("+++ en vs no vs de with mixed q values, most preferred available +++")
     accept = "en;q=0.6, no;q=0.9, de"
     server = [AcceptParameters(language=Language("no")), AcceptParameters(language=Language("de"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en-gb supported by server +++"
+    print("+++ en-gb supported by server +++")
     accept = "en-gb"
     server = [AcceptParameters(language=Language("en-gb"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en-gb, unsupported by server +++"
+    print("+++ en-gb, unsupported by server +++")
     accept = "en-gb"
     server = [AcceptParameters(language=Language("en"))]
     cn = ContentNegotiator(acceptable=server, ignore_language_variants=False)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en-gb, supported by server through language variants +++"
+    print("+++ en-gb, supported by server through language variants +++")
     accept = "en-gb"
     server = [AcceptParameters(language=Language("en"))]
     cn = ContentNegotiator(acceptable=server, ignore_language_variants=True)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ en, partially supported by server +++"
+    print("+++ en, partially supported by server +++")
     accept = "en"
     server = [AcceptParameters(language=Language("en-gb"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ * by itself +++"
+    print("+++ * by itself +++")
     accept = "*"
     server = [AcceptParameters(language=Language("no")), AcceptParameters(language=Language("de"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ * with other options, primary option unsupported +++"
+    print("+++ * with other options, primary option unsupported +++")
     accept = "en, *"
     server = [AcceptParameters(language=Language("no")), AcceptParameters(language=Language("de"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ * with other options, primary option supported +++"
+    print("+++ * with other options, primary option supported +++")
     accept = "en, *"
     server = [AcceptParameters(language=Language("en")), AcceptParameters(language=Language("de"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept_language=accept)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "===================================="
-    print "======LANGUAGE+CONTENT TYPE========="
+    print("====================================")
+    print("======LANGUAGE+CONTENT TYPE=========")
     
-    print "+++ content type and language specified +++"
+    print("+++ content type and language specified +++")
     accept = "text/html"
     accept_lang = "en"
     server = [AcceptParameters(ContentType("text/html"), Language("en"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept, accept_language=accept_lang)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ 2 content types and one language specified +++"
+    print("+++ 2 content types and one language specified +++")
     accept = "text/html, text/plain"
     accept_lang = "en"
     server = [AcceptParameters(ContentType("text/html"), Language("de")), AcceptParameters(ContentType("text/plain"), Language("en"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept, accept_language=accept_lang)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ 2 content types and 2 languages specified +++"
+    print("+++ 2 content types and 2 languages specified +++")
     accept = "text/html, text/plain"
     accept_lang = "en, de"
     server = [AcceptParameters(ContentType("text/html"), Language("de")), AcceptParameters(ContentType("text/plain"), Language("en"))]
     cn = ContentNegotiator(acceptable=server)
     ap = cn.negotiate(accept=accept, accept_language=accept_lang)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
     
-    print "+++ 2 content types and one language specified, with weights +++"
+    print("+++ 2 content types and one language specified, with weights +++")
     weights = {'content_type' : 2.0, 'language' : 1.0, 'charset' : 1.0, 'encoding' : 1.0}
     accept = "text/html, text/plain"
     accept_lang = "en"
     server = [AcceptParameters(ContentType("text/html"), Language("de")), AcceptParameters(ContentType("text/plain"), Language("en"))]
     cn = ContentNegotiator(acceptable=server, weights=weights)
     ap = cn.negotiate(accept=accept, accept_language=accept_lang)
-    print "+++ " + str(ap) + " +++"
+    print("+++ " + str(ap) + " +++")
